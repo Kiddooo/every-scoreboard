@@ -1,2 +1,2 @@
-minecraft_data==3.9.1
+git+https://github.com/Kiddooo/python-minecraft-data.git
 requests
