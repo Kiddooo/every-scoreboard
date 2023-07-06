@@ -23,25 +23,17 @@ parser = argparse.ArgumentParser(description=description)
 parser.add_argument("-mc", "--mcversion", help="set the Minecraft version the scoreboards will be for")
 parser.add_argument("-c", "--custom", help="add the 'custom' objectives, from the latest version of the game",
 					action="store_true")
-parser.add_argument("-eta", "--endtechAdditions", help="add the 'custom' objectives from EndTech Additions",
-					action="store_true")
 args = parser.parse_args()
 
 
 def main():
-	if args.custom or args.endtechAdditions:
+	if args.custom:
 		print("\033[91mWARNING! The --custom flag is made for the %s version(s)."
 			  "It will not work without modifying the generated mcfunction files!\033[0m" % custom_version)
-	if args.endtechAdditions:
-		print("\033[91mWARNING! The --endtechAdditions flag is made for the EndTech Additions Mod."
-			  "To use these custom objectives, you need this mod on your server\033[0m")
 
 	minecraft_version = args.mcversion
 	data = minecraft_data(minecraft_version)
-	custom_stats = json.loads(
-		open("./scripts/assets/custom_stats.json", "r").read()) if args.custom or args.endtechAdditions else {}
-	et_additions_stats = json.loads(
-		open("./scripts/assets/et-additions_stats.json", "r").read()) if args.endtechAdditions else {}
+	custom_stats = json.loads(open("./scripts/assets/custom_stats.json", "r").read()) if args.custom else {}
 
 	# Creates the objective names from the registries
 	mined = make(data.blocks, "m", "minecraft.mined", "%s Mined")
@@ -53,7 +45,6 @@ def main():
 	killed = make(data.entities_name, "k", "minecraft.killed", "%s Killed")
 	killed_by = make(data.entities_name, "kb", "minecraft.killed_by", "Killed by %s")
 	custom = make(custom_stats, "z", "minecraft.custom", "%s")
-	et_additions = make(et_additions_stats, "z", "minecraft.custom", "%s")
 
 	# Creates the required folders
 	os.makedirs("./dictionaries/", exist_ok=True)
@@ -69,18 +60,17 @@ def main():
 	dictionary = open("./dictionaries/dictionary-" + minecraft_version + ".json", "w+")
 	dictionary.write(json.dumps({**mined["dictionary"], **used["dictionary"], **crafted["dictionary"],
 								 **broken["dictionary"], **dropped["dictionary"], **picked_up["dictionary"],
-								 **killed["dictionary"], **killed_by["dictionary"], **custom["dictionary"],
-								 **et_additions["dictionary"]}))
+								 **killed["dictionary"], **killed_by["dictionary"], **custom["dictionary"]}))
 	dictionary.close()
 	print("Wrote the dictionary file")
 
 	# Creates the commands, which will register the objectives
 	fin_create_commands = create_commands(mined) + create_commands(used) + create_commands(crafted) + create_commands(
 		broken) + create_commands(dropped) + create_commands(picked_up) + create_commands(killed) + create_commands(
-		killed_by) + create_commands(custom) + create_commands(et_additions)
+		killed_by) + create_commands(custom)
 	fin_delete_commands = delete_commands(mined) + delete_commands(used) + delete_commands(crafted) + delete_commands(
 		broken) + delete_commands(dropped) + delete_commands(picked_up) + delete_commands(killed) + delete_commands(
-		killed_by) + delete_commands(custom) + delete_commands(et_additions)
+		killed_by) + delete_commands(custom)
 
 	# Writes to a file
 	create_mcfunction = open(
