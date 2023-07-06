@@ -7,14 +7,14 @@ It works by generating a datapack which will create the scoreboards for you.
 
 # How to use
 
-You can find 'pre-made' datapacks over [here](https://github.com/Syntro42/every-scoreboard/tags).
+You can find 'pre-made' datapacks over [here](https://github.com/Kiddooo/every-scoreboard/tags).
 If you don't find what you need, read the following section; you can skip it otherwise.
 
 ## 'Compiling'
 
 First of all, clone the repository:
 ```shell script
-$ git clone https://github.com/Syntro42/every-scoreboard.git
+$ git clone https://github.com/Kiddooo/every-scoreboard.git
 $ cd every-scoreboard
 ```
 
@@ -26,7 +26,7 @@ $ pip install -r requirements.txt
 
 To 'compile' the datapacks, run the following:
 ```shell script
-$ python3 scripts/create.py --mcversion="1.19" -c
+$ python3 scripts/create.py --mcversion="1.20.1" -c
 ```
 The `-c` flag will add the [custom objectives](https://minecraft.gamepedia.com/Statistics#List_of_custom_statistic_names)
 to the datapack. Be careful however! It is made for the latest version(s) of the game only.
@@ -103,8 +103,4 @@ and enter these commands:
 ```
 
 # Credits
-The original creator is [`samipourquoi`](https://github.com/samipourquoi) \
-I am now the maintainer of this project. You can contact me on Discord `Syntro#9454` \
-or via the EndTech discord: https://discord.gg/m6zdS2Pm2J
-
-Feel free to contact me if you need any help 😀
+The original creator is [`samipourquoi`](https://github.com/samipourquoi)
